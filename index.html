@@ -21,7 +21,7 @@
     <button onclick="rotateVideo(-90)">↶ Rotar en sentido antihorario</button>
     <button onclick="rotateVideo(90)">Rotar en sentido horario ↷</button>
     <br><br>
-    <button onclick="downloadRotatedVideo()">Descargar vídeo rotado</button>
+    <button id="downloadButton" onclick="downloadRotatedVideo()">Descargar vídeo rotado</button>
     <canvas id="canvas"></canvas>
     <script>
         const { createFFmpeg, fetchFile } = FFmpeg;
@@ -31,6 +31,7 @@
         const ffmpeg = createFFmpeg({ log: true });
         const video = document.getElementById("video");
         const videoInput = document.getElementById("videoInput");
+        const downloadButton = document.getElementById("downloadButton");
 
         videoInput.addEventListener("change", function(event) {
             const file = event.target.files[0];
@@ -53,6 +54,9 @@
         }
 
         async function downloadRotatedVideo() {
+            downloadButton.disabled = true;
+            downloadButton.textContent = "Procesando...";
+
             await ffmpeg.load();
             const inputFileName = `input.${videoFormat}`;
             const outputFileName = `rotated_video.${videoFormat}`;
@@ -90,7 +94,10 @@
             document.body.appendChild(a);
             a.click();
             document.body.removeChild(a);
+
+            downloadButton.disabled = false;
+            downloadButton.textContent = "Descargar vídeo rotado";
         }
     </script>
-    </script>
+</body>
 </html>
