@@ -121,7 +121,9 @@
                         ffmpeg.FS('unlink', `input.${videoFormat}`);
                     } catch (e) {}
                     try {
-                        ffmpeg.FS('unlink', `rotated_video.${videoFormat}`);
+                        if (ffmpeg.FS('readdir', '/').includes(`rotated_video.${videoFormat}`)) {
+                            ffmpeg.FS('unlink', `rotated_video.${videoFormat}`);
+                        }
                     } catch (e) {}
                 }
                 video.style.transform = `rotate(${rotation}deg)`;
