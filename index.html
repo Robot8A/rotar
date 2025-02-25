@@ -136,7 +136,9 @@
             spinner.className = 'spinner';
             downloadButton.appendChild(spinner);
 
-            await ffmpeg.load();
+            if (!ffmpeg.isLoaded()) {
+                await ffmpeg.load();
+            }
             const inputFileName = `input.${videoFormat}`;
             const outputFileName = `rotated_video.${videoFormat}`;
 
