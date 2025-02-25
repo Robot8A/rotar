@@ -117,8 +117,12 @@
                 rotation = 0;
                 video.style.transform = `rotate(${rotation}deg)`;
                 if (ffmpeg.isLoaded()) {
-                    ffmpeg.FS('unlink', `input.${videoFormat}`).catch(() => {});
-                    ffmpeg.FS('unlink', `rotated_video.${videoFormat}`).catch(() => {});
+                    try {
+                        ffmpeg.FS('unlink', `input.${videoFormat}`);
+                    } catch (e) {}
+                    try {
+                        ffmpeg.FS('unlink', `rotated_video.${videoFormat}`);
+                    } catch (e) {}
                 }
                 video.style.transform = `rotate(${rotation}deg)`;
     
