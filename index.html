@@ -26,7 +26,7 @@
         import { createFFmpeg, fetchFile } from 'https://cdn.jsdelivr.net/npm/@ffmpeg/ffmpeg@0.11.0/+esm';
 
         let rotation = 0;
-        let videoFormat = 'mp4'; // Default format
+        let videoFormat = 'mp4';
         const ffmpeg = createFFmpeg({ log: true });
         const video = document.getElementById("video");
         const videoInput = document.getElementById("videoInput");
@@ -39,7 +39,6 @@
                 rotation = 0;
                 video.style.transform = `rotate(${rotation}deg)`;
 
-                // Detect file extension
                 const ext = file.name.split('.').pop().toLowerCase();
                 if (['mp4', 'mov', 'avi', 'mkv', 'webm'].includes(ext)) {
                     videoFormat = ext;
@@ -59,29 +58,27 @@
 
             await ffmpeg.FS('writeFile', inputFileName, await fetchFile(video.src));
 
-            // Select correct FFmpeg rotation filter
             let rotationFilter;
             switch (rotation) {
                 case 90:
-                    rotationFilter = "transpose=1"; // Rotate 90° clockwise
+                    rotationFilter = "transpose=1";
                     break;
                 case 180:
-                    rotationFilter = "transpose=2,transpose=2"; // Rotate 180°
+                    rotationFilter = "transpose=2,transpose=2";
                     break;
                 case 270:
-                    rotationFilter = "transpose=2"; // Rotate 90° counterclockwise
+                    rotationFilter = "transpose=2";
                     break;
                 default:
-                    rotationFilter = ""; // No rotation needed
+                    rotationFilter = "";
             }
 
             if (rotationFilter) {
                 await ffmpeg.run('-i', inputFileName, '-vf', rotationFilter, '-c:a', 'copy', outputFileName);
             } else {
-                await ffmpeg.run('-i', inputFileName, '-c', 'copy', outputFileName); // No rotation, just copy
+                await ffmpeg.run('-i', inputFileName, '-c', 'copy', outputFileName);
             }
 
-            // Create downloadable file
             const data = ffmpeg.FS('readFile', outputFileName);
             const blob = new Blob([data.buffer], { type: `video/${videoFormat}` });
             const url = URL.createObjectURL(blob);
