@@ -5,9 +5,39 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Rotar vídeos</title>
     <style>
-        body { text-align: center; }
-        video { max-width: 100%; transform-origin: center; }
-        canvas { display: none; }
+        body { 
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+            height: 100vh; 
+            margin: 0; 
+            font-family: Arial, sans-serif; 
+        }
+        .left {
+            flex: 1;
+            padding: 20px;
+            text-align: center;
+            border-right: 1px solid #ccc;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+        .right {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+        }
+        video { 
+            max-width: 100%; 
+            max-height: 100%;
+            transform-origin: center; 
+        }
+        canvas { 
+            display: none; 
+        }
         .spinner {
             display: inline-block;
             width: 20px;
@@ -26,17 +56,22 @@
     <script src="coi-serviceworker.js"></script>
 </head>
 <body>
-    <h1>Rotar vídeos</h1>
-    <input type="file" id="videoInput" accept="video/*">
-    <br><br>
-    <video id="video" controls></video>
-    <br><br>
-    <button onclick="rotateVideo(-90)">↶ Rotar en sentido antihorario</button>
-    <button onclick="rotateVideo(90)">Rotar en sentido horario ↷</button>
-    <br><br>
-    <div style="display: flex; justify-content: center;">
-        <button id="downloadButton" onclick="downloadRotatedVideo()" style="display: flex; align-items: center; justify-content: center; height: 40px;">Descargar vídeo rotado</button>
-    </div></div>
+    
+    <div class="left">
+        <h1>Rotar vídeos</h1>
+        <input type="file" id="videoInput" accept="video/*">
+        <br><br>
+        <button onclick="rotateVideo(-90)">↶ Rotar en sentido antihorario</button>
+        <button onclick="rotateVideo(90)">Rotar en sentido horario ↷</button>
+        <br><br>
+        <div style="display: flex; justify-content: center;"></div>
+            <button id="downloadButton" onclick="downloadRotatedVideo()" style="display: flex; align-items: center; justify-content: center; height: 40px;">Descargar vídeo rotado</button>
+        </div>
+    </div>
+    <div class="right">
+        <video id="video" controls></video>
+    </div>
+    </div>
     <canvas id="canvas"></canvas>
     <script>
         const { createFFmpeg, fetchFile } = FFmpeg;
