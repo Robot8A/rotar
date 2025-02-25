@@ -48,7 +48,9 @@
             canvas.width = video.videoWidth;
             canvas.height = video.videoHeight;
             const stream = canvas.captureStream();
-            const recorder = new MediaRecorder(stream);
+            const audioStream = video.captureStream().getAudioTracks();
+            const combinedStream = new MediaStream([...stream.getVideoTracks(), ...audioStream]);
+            const recorder = new MediaRecorder(combinedStream);
             const chunks = [];
 
             recorder.ondataavailable = function(event) {
