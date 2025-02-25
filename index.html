@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Rotar vídeos</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
     <style>
         body { 
             display: flex; 
@@ -11,25 +12,33 @@
             align-items: center; 
             height: 100vh; 
             margin: 0; 
-            font-family: Arial, sans-serif; 
+            font-family: 'Poppins', sans-serif; 
+            background-color: #f0f0f0;
         }
         .left {
             flex: 1;
-            padding: 20px;
+            padding: 5vh 2vw;
             text-align: center;
             border-right: 1px solid #ccc;
             display: flex;
             flex-direction: column;
             justify-content: space-around;
             align-items: center;
+            background-color: #ffe4b5;
+            height: 100%;
         }
         .left button, .left input {
-            margin: 5px 0;
+            margin: 2vh 0;
+            width: 80%;
+            max-width: 30vw;
+            padding: 1em;
+            font-size: 1.5vw;
+            font-family: 'Poppins', sans-serif;
         }
         .rotate-buttons {
             display: flex;
             justify-content: center;
-            gap: 10px;
+            gap: 2vw;
         }
         .right {
             flex: 1;
@@ -48,18 +57,18 @@
         }
         .spinner {
             display: inline-block;
-            width: 20px;
-            height: 20px;
-            border: 3px solid rgba(0, 0, 0, 0.3);
+            width: 2vw;
+            height: 2vw;
+            border: 0.3vw solid rgba(0, 0, 0, 0.3);
             border-radius: 50%;
             border-top-color: #000;
             animation: spin 1s ease-in-out infinite;
-            margin-left: 10px;
+            margin-left: 1vw;
         }
         @keyframes spin {
             to { transform: rotate(360deg); }
         }
-    </style>
+    </style>    
     <script src="https://cdn.jsdelivr.net/npm/@ffmpeg/ffmpeg@0.11.0/dist/ffmpeg.min.js"></script>
     <script src="coi-serviceworker.js"></script>
 </head>
@@ -70,12 +79,12 @@
         <input type="file" id="videoInput" accept="video/*">
         <br>
         <div class="rotate-buttons">
-            <button onclick="rotateVideo(-90)">↶ Rotar en sentido antihorario</button>
-            <button onclick="rotateVideo(90)">Rotar en sentido horario ↷</button>
+            <button onclick="rotateVideo(-90)" title="Rotar en sentido antihorario">↶</button>
+            <button onclick="rotateVideo(90)" title="Rotar en sentido horario">↷</button>
         </div>
         <br>
         <div style="display: flex; justify-content: center;"></div>
-            <button id="downloadButton" onclick="downloadRotatedVideo()" style="display: flex; align-items: center; justify-content: center; height: 40px;">Descargar vídeo rotado</button>
+            <button id="downloadButton" onclick="downloadRotatedVideo()" style="display: flex; align-items: center; justify-content: center; height: 40px; font-weight: bold;">⭳ Descargar</button>
         </div>
     </div>
     <div class="right">
