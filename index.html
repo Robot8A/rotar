@@ -26,14 +26,21 @@
             align-items: center;
             background-color: #ffe4b5;
             height: 100%;
+            overflow-y: auto; /* Added this line */
+        }
+        .left h1 {
+            font-size: 4vw; /* Adjust this value as needed */
         }
         .left button, .left input {
             margin: 2vh 0;
-            width: 80%;
-            max-width: 30vw;
-            padding: 1em;
-            font-size: 1.5vw;
+            width: 90%;
+            max-width: 40vw;
+            padding: 2em;
+            font-size: 2vw;
             font-family: 'Poppins', sans-serif;
+        }
+        .left button {
+            box-shadow: 0 0.5vw 1vw rgba(0, 0, 0, 0.2);
         }
         .rotate-buttons {
             display: flex;
