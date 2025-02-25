@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="es"></html>
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -21,10 +21,9 @@
     <br><br>
     <button onclick="downloadRotatedVideo()">Descargar vídeo rotado</button>
     <canvas id="canvas"></canvas>
-    
+
     <script>
         let rotation = 0;
-        let fps = 30;
         const video = document.getElementById("video");
         const videoInput = document.getElementById("videoInput");
         const canvas = document.getElementById("canvas");
@@ -40,57 +39,59 @@
             }
         });
 
-        video.addEventListener('loadedmetadata', function() {
-            fps = video.frameRate || 30; // Use the video's frame rate if available, otherwise default to 30
-        });
-
         function rotateVideo(angle) {
             rotation = (rotation + angle) % 360;
             video.style.transform = `rotate(${rotation}deg)`;
         }
 
         function downloadRotatedVideo() {
-            canvas.width = video.videoWidth;
-            canvas.height = video.videoHeight;
-            const chunks = [];
-            const duration = video.duration;
-            const totalFrames = Math.floor(duration * fps);
-            let currentFrame = 0;
+            canvas.width = video.videoHeight; // Swap width & height if rotated 90/270 degrees
+            canvas.height = video.videoWidth;
 
-            function drawFrame() {
-                if (currentFrame < totalFrames) {
-                    ctx.clearRect(0, 0, canvas.width, canvas.height);
-                    ctx.save();
-                    ctx.translate(canvas.width / 2, canvas.height / 2);
-                    ctx.rotate(rotation * Math.PI / 180);
-                    ctx.drawImage(video, -canvas.width / 2, -canvas.height / 2, canvas.width, canvas.height);
-                    ctx.restore();
-                    canvas.toBlob(function(blob) {
-                        chunks.push(blob);
-                        currentFrame++;
-                        requestAnimationFrame(drawFrame);
-                    }, 'image/webp');
-                } else {
-                    createVideoFromFrames();
+            let stream = canvas.captureStream(30); // Capture at 30 FPS
+            let mediaRecorder = new MediaRecorder(stream, { mimeType: 'video/webm' });
+            let chunks = [];
+
+            mediaRecorder.ondataavailable = function(event) {
+                if (event.data.size > 0) {
+                    chunks.push(event.data);
                 }
-            }
+            };
 
-            function createVideoFromFrames() {
-                const webmBlob = new Blob(chunks, { type: 'video/webm' });
-                const url = URL.createObjectURL(webmBlob);
+            mediaRecorder.onstop = function() {
+                const blob = new Blob(chunks, { type: 'video/webm' });
+                const url = URL.createObjectURL(blob);
                 const a = document.createElement('a');
                 a.href = url;
                 a.download = 'rotated_video.webm';
                 document.body.appendChild(a);
                 a.click();
                 document.body.removeChild(a);
+            };
+
+            mediaRecorder.start();
+            drawFrames(mediaRecorder);
+        }
+
+        function drawFrames(mediaRecorder) {
+            function renderFrame() {
+                if (video.paused || video.ended) {
+                    mediaRecorder.stop();
+                    return;
+                }
+
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                ctx.save();
+                ctx.translate(canvas.width / 2, canvas.height / 2);
+                ctx.rotate((rotation * Math.PI) / 180);
+                ctx.drawImage(video, -video.videoWidth / 2, -video.videoHeight / 2);
+                ctx.restore();
+
+                requestAnimationFrame(renderFrame);
             }
 
-            video.addEventListener('loadeddata', function() {
-                canvas.width = video.videoWidth;
-                canvas.height = video.videoHeight;
-                drawFrame();
-            });
+            video.play();
+            renderFrame();
         }
     </script>
 </body>
