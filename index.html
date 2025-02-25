@@ -157,6 +157,10 @@
                     rotationFilter = "";
             }
 
+            ffmpeg.setProgress(({ ratio }) => {
+                downloadButton.textContent = `Procesando... ${Math.round(ratio * 100)}%`;
+            });
+
             if (rotationFilter) {
                 await ffmpeg.run('-i', inputFileName, '-vf', rotationFilter, '-c:a', 'copy', outputFileName);
             } else {
