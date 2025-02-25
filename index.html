@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="es"></html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rotar vídeos</title>
+    <style>
+        body { text-align: center; }
+        video { max-width: 100%; transform-origin: center; }
+    </style>
+</head>
+<body>
+    <h1>Rotar vídeos</h1>
+    <input type="file" id="videoInput" accept="video/*">
+    <br><br>
+    <video id="video" controls></video>
+    <br><br>
+    <button onclick="rotateVideo(-90)">↶ Rotar en sentido antihorario</button>
+    <button onclick="rotateVideo(90)">Rotar en sentido horario ↷</button>
+    
+    <script>
+        let rotation = 0;
+        const video = document.getElementById("video");
+        const videoInput = document.getElementById("videoInput");
+
+        videoInput.addEventListener("change", function(event) {
+            const file = event.target.files[0];
+            if (file) {
+                const url = URL.createObjectURL(file);
+                video.src = url;
+                rotation = 0;
+                video.style.transform = `rotate(${rotation}deg)`;
+            }
+        });
+
+        function rotateVideo(angle) {
+            rotation = (rotation + angle) % 360;
+            video.style.transform = `rotate(${rotation}deg)`;
+        }
+    </script>
+</body>
+</html>
