@@ -20,8 +20,16 @@
             border-right: 1px solid #ccc;
             display: flex;
             flex-direction: column;
-            justify-content: center;
+            justify-content: space-around;
             align-items: center;
+        }
+        .left button, .left input {
+            margin: 5px 0;
+        }
+        .rotate-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
         }
         .right {
             flex: 1;
@@ -60,10 +68,12 @@
     <div class="left">
         <h1>Rotar vídeos</h1>
         <input type="file" id="videoInput" accept="video/*">
-        <br><br>
-        <button onclick="rotateVideo(-90)">↶ Rotar en sentido antihorario</button>
-        <button onclick="rotateVideo(90)">Rotar en sentido horario ↷</button>
-        <br><br>
+        <br>
+        <div class="rotate-buttons">
+            <button onclick="rotateVideo(-90)">↶ Rotar en sentido antihorario</button>
+            <button onclick="rotateVideo(90)">Rotar en sentido horario ↷</button>
+        </div>
+        <br>
         <div style="display: flex; justify-content: center;"></div>
             <button id="downloadButton" onclick="downloadRotatedVideo()" style="display: flex; align-items: center; justify-content: center; height: 40px;">Descargar vídeo rotado</button>
         </div>
