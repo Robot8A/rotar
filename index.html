@@ -182,7 +182,9 @@
 
             downloadButton.disabled = false;
             downloadButton.textContent = "Descargar vídeo rotado";
-            downloadButton.removeChild(spinner);
+            if (spinner.parentNode === downloadButton) {
+                downloadButton.removeChild(spinner);
+            }
         }
     </script>
 </body>
