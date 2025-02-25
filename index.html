@@ -115,6 +115,7 @@
                 const url = URL.createObjectURL(file);
                 video.src = url;
                 rotation = 0;
+                video.style.transform = `rotate(${rotation}deg)`;
                 if (ffmpeg.isLoaded()) {
                     ffmpeg.FS('unlink', `input.${videoFormat}`).catch(() => {});
                     ffmpeg.FS('unlink', `rotated_video.${videoFormat}`).catch(() => {});
@@ -188,7 +189,7 @@
             document.body.removeChild(a);
     
             downloadButton.disabled = false;
-            downloadButton.textContent = "Descargar vídeo rotado";
+            downloadButton.textContent = "⭳ Descargar";
             rotation = 0;
             video.style.transform = `rotate(${rotation}deg)`;
         }
