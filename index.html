@@ -108,6 +108,7 @@
         const video = document.getElementById("video");
         const videoInput = document.getElementById("videoInput");
         const downloadButton = document.getElementById("downloadButton");
+        downloadButton.disabled = true;
     
         videoInput.addEventListener("change", function(event) {
             const file = event.target.files[0];
@@ -126,6 +127,11 @@
                 if (['mp4', 'mov', 'avi', 'mkv', 'webm'].includes(ext)) {
                     videoFormat = ext;
                 }
+
+                downloadButton.style.backgroundColor = "";
+                downloadButton.style.color = "";
+                downloadButton.disabled = false;
+                downloadButton.textContent = "⭳ Descargar";
             }
         });
     
