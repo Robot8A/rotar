@@ -40,6 +40,8 @@
                 video.src = url;
                 rotation = 0;
                 video.style.transform = `rotate(${rotation}deg)`;
+                video.style.width = 'auto';
+                video.style.height = 'auto';
 
                 const ext = file.name.split('.').pop().toLowerCase();
                 if (['mp4', 'mov', 'avi', 'mkv', 'webm'].includes(ext)) {
@@ -51,6 +53,14 @@
         function rotateVideo(angle) {
             rotation = (rotation + angle) % 360;
             video.style.transform = `rotate(${rotation}deg)`;
+
+            if (rotation === 90 || rotation === 270) {
+                video.style.width = `${video.videoHeight}px`;
+                video.style.height = `${video.videoWidth}px`;
+            } else {
+                video.style.width = 'auto';
+                video.style.height = 'auto';
+            }
         }
 
         async function downloadRotatedVideo() {
